@@ -14,4 +14,13 @@ def get_data(id=None):
     data = req.json()
     print('data', data)
 
-get_data()
+# get_data()
+
+def post_data():
+    data={'name': 'Ubaid', 'roll': 44, 'city': 'Lahore'}
+    json_data = json.dumps(data)
+    r = requests.post(url = URL , data = json_data)
+    data = r.json()
+    print('post data', data)
+
+post_data()
