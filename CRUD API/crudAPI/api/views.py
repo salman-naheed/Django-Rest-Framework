@@ -38,3 +38,18 @@ def student_api(request):
             return HttpResponse(json_data,content_type='application/json')
         json_data = JSONRenderer().render(serializer.errors)
         return HttpResponse(json_data,content_type='application/json')
+
+    if request.method == 'PUT':
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        pythonData = JSONParser().parse(stream)
+        id = pythonData.get('id')
+        stu = Student.objects.get(id=id)
+        serializer = StudentSerializer(stu, data=pythonData, partial=True)
+        if serializer.is_valid():
+            serializer .save()
+            res = {'msg': 'Data created'}
+            json_data =  JSONRenderer().render(res)
+            return HttpResponse(json_data, content_type='application/json')
+        json_data = JSONRenderer().render(serializer.errors)
+        return HttpResponse(json_data, content_type='application/json')
